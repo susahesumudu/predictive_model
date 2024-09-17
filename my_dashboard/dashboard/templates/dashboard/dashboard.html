@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Dashboard</h2>
+    <div class="row">
+        <!-- Metrics Display -->
+        {% for metric in metrics %}
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ metric.name }}</h5>
+                    <p class="card-text">{{ metric.value }}</p>
+                    <small class="text-muted">Last updated: {{ metric.last_updated }}</small>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Chart Section -->
+    <canvas id="myChart"></canvas>
+</div>
+
+<!-- Chart.js Script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [{% for metric in metrics %}'{{ metric.name }}',{% endfor %}],
+            datasets: [{
+                label: 'Metric Values',
+                data: [{% for metric in metrics %}{{ metric.value }},{% endfor %}],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}
+

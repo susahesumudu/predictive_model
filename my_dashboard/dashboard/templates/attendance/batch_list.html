@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Batch List</h2>
+
+    <ul>
+        {% for batch in batches %}
+        <li>
+            <a href="{% url 'assign_tasks_to_batch' batch.id %}">{{ batch.name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
+

@@ -53,16 +53,138 @@ Follow the steps below to set up the project on your local machine:
    cd predictive_model
 
 
-### Explanation:
-- **Code blocks** are enclosed in triple backticks (\`\`\`), which formats the text as code.
-- **Headings** are created with the `#` symbol followed by a space. For subheadings, use multiple `#` symbols.
-- **Links** are formatted as `[Text](URL)`.
-- **Bullet points** are created using the `-` or `*` symbol followed by a space.
-  
-### Steps to Use:
-1. **Copy the above text**.
-2. **Create or edit the `README.md` file** in your GitHub repository.
-3. **Paste the content** and commit the file.
-4. **GitHub will automatically render the Markdown** as a formatted page.
+2. **Create a Virtual Environment (optional):**
+   ```bash
+      Copy code
+      python3 -m venv env
+      source env/bin/activate   # For Linux/macOS
+      env\Scripts\activate      # For Windows
 
-This will ensure that your instructions and information are properly formatted on GitHub. Let me know if you need any more assistance!
+3.  **Install Dependencies: Install the required Python packages by running:**
+
+    ```bash
+      Copy code
+      pip install -r requirements.txt
+
+4. **Apply Migrations: Set up the database and apply migrations:**
+
+    ```bash
+      Copy code
+      python manage.py migrate
+    
+5. **Run the Development Server: Start the Django development server:**
+
+    ```bash
+      Copy code
+      python manage.py runserver
+    
+6. **Access the Application: Open your browser and navigate to http://127.0.0.1:8000/.**
+
+    ```bash
+      Django Admin Panel
+
+7. **The Django admin panel is available at http://127.0.0.1:8000/admin. You can create an admin user by running:**
+
+    ```bash
+         Copy code
+         python manage.py createsuperuser
+         Follow the prompts to set the username, email, and password.
+
+Prediction Module
+The predictive model logic is located in the predictive_model folder. The functionality allows for training, evaluating, and managing predictive models for various use cases.
+
+Training Management System (TMS)
+The TMS module is used for managing training schedules, tracking student attendance, generating reports, and more.
+
+Features
+Predictive Model Creation: Build and manage predictive models.
+Training Management: Manage courses, track progress, and handle attendance.
+User Authentication: Built-in user registration and login system using Django's authentication.
+Admin Dashboard: Manage all aspects of the application through the Django admin panel.
+Contributing
+Contributions are welcome! If you'd like to contribute, please fork the repository and create a pull request.
+
+Fork the repository
+Create your feature branch:
+bash
+Copy code
+git checkout -b feature/YourFeature
+Commit your changes:
+bash
+Copy code
+git commit -m "Add Your Feature"
+Push to the branch:
+bash
+Copy code
+git push origin feature/YourFeature
+Open a pull request
+License
+This project is licensed under the MIT License. See the LICENSE file for more information.
+
+Contact Information
+For any questions or support, feel free to contact the project owner: sumudu.susahe@gmail.com.
+
+bash
+Copy code
+python3 -m venv env
+source env/bin/activate   # For Linux/macOS
+env\Scripts\activate      # For Windows
+Install Dependencies: Install the required Python packages by running:
+
+bash
+Copy code
+pip install -r requirements.txt
+Apply Migrations: Set up the database and apply migrations:
+
+bash
+Copy code
+python manage.py migrate
+Run the Development Server: Start the Django development server:
+
+bash
+Copy code
+python manage.py runserver
+Access the Application: Open your browser and navigate to http://127.0.0.1:8000/.
+
+Usage
+Django Admin Panel
+The Django admin panel is available at http://127.0.0.1:8000/admin. You can create an admin user by running:
+
+bash
+Copy code
+python manage.py createsuperuser
+Follow the prompts to set the username, email, and password.
+
+Prediction Module
+The predictive model logic is located in the predictive_model folder. The functionality allows for training, evaluating, and managing predictive models for various use cases.
+
+Training Management System (TMS)
+The TMS module is used for managing training schedules, tracking student attendance, generating reports, and more.
+
+Features
+Predictive Model Creation: Build and manage predictive models.
+Training Management: Manage courses, track progress, and handle attendance.
+User Authentication: Built-in user registration and login system using Django's authentication.
+Admin Dashboard: Manage all aspects of the application through the Django admin panel.
+Contributing
+Contributions are welcome! If you'd like to contribute, please fork the repository and create a pull request.
+
+Fork the repository
+Create your feature branch:
+bash
+Copy code
+git checkout -b feature/YourFeature
+Commit your changes:
+bash
+Copy code
+git commit -m "Add Your Feature"
+Push to the branch:
+bash
+Copy code
+git push origin feature/YourFeature
+Open a pull request
+License
+This project is licensed under the MIT License. See the LICENSE file for more information.
+
+Contact Information
+For any questions or support, feel free to contact the project owner: sumudu.susahe@gmail.com.

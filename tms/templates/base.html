@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIT Computer Training Center </title>
+    
+    <!-- Load Bootstrap from CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    {% load static %}  <!-- Django static tag for custom styles -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">  <!-- Your custom styles -->
+</head>
+<body>
+    <!-- Interactive Navbar -->
+    <nav class="navbar navbar-expand-lg" style="background-color: #004d00;">
+        <a class="navbar-brand text-white" href="#">MIT Computer Training Center - TMS</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                {% if user.is_authenticated %}
+                   
+                    {% if is_admin %}
+                        <li class="nav-item">
+                            <a href="/admin/" class="nav-link text-white">Admin</a>
+                        </li>
+                    {% endif %}
+
+                      <li class="nav-item">
+                        <a href="{% url 'profile' %}" class="nav-link text-white">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="#"  class="nav-link text-white" onclick="document.getElementById('logout-form').submit();"> Logout</a>
+
+                  <form id="logout-form" method="post" action="{% url 'logout' %}" style="display: none;">
+                      {% csrf_token %}
+                  </form>
+
+                    </li>
+                <li>
+<a href="{% url 'profile_edit' %}" class="nav-link text-white btn btn-primary">Edit Profile</a>
+                </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a href="{% url 'login' %}" class="nav-link text-white"> </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{% static 'js/navbar.js' %}"></script>  <!-- Your custom JS -->
+</body>
+</html>
+

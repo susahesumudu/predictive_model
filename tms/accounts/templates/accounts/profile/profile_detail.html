@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Profile</title>
+</head>
+<body>
+   
+</body>
+</html>
+
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+     <h1>Your Profile</h1>
+    <p>Username: {{ object.user.username }}</p>
+    <p>Name: {{ object.user.first_name }} {{ object.user.last_name }}</p>
+    <p>Email: {{ object.user.email }}</p>
+    <p>NIC/Passport No: {{ object.nic_passport_no }}</p>
+    <p>Contact Address: {{ object.contact_address }}</p>
+    <p>Permanent Address: {{ object.permanent_address }}</p>
+    <p>Mobile No: {{ object.mobile_no }}</p>
+    <p>Home No: {{ object.home_no }}</p>
+    <p>Gender: {{ object.get_gender_display }}</p>
+    <a href="{% url 'profile_update' %}">Edit Profile</a>
+
+{% endblock %}
+

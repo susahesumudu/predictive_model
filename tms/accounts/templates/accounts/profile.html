@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Welcome, {{ user.username }}</h1>
+    <p>This is your dashboard.</p>
+
+    {% if is_admin %}
+        <p>You are an admin!</p>
+    {% else %}
+        <p>You are a regular user.</p>
+    {% endif %}
+{% endblock %}
+

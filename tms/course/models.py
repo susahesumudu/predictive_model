@@ -210,6 +210,39 @@ class Task(models.Model):
 
 
 class Lesson(models.Model):
+    LAB_EXERCISE = 'Lab Exercise'
+    ASSIGNMENT = 'Assignment'
+    ASSESSMENT = 'Assessment'
+    PROJECT = 'Project'
+    MCQ = 'MCQ'
+    PRESENTATION = 'Presentation'
+    WORKSHOP = 'Workshop'
+    PRACTICAL_LAB = 'Practical Lab'
+    QUIZ = 'Quiz'
+    CASE_STUDY = 'Case Study'
+    LECTURE = 'Lecture'
+
+    ACTIVITY_TYPE_CHOICES = [
+        (LAB_EXERCISE, 'Lab Exercise'),
+        (ASSIGNMENT, 'Assignment'),
+        (ASSESSMENT, 'Assessment'),
+        (PROJECT, 'Project'),
+        (MCQ, 'Multiple-Choice Questions (MCQs)'),
+        (PRESENTATION, 'Presentation'),
+        (WORKSHOP, 'Workshop'),
+        (PRACTICAL_LAB, 'Practical Lab'),
+        (QUIZ, 'Quiz'),
+        (CASE_STUDY, 'Case Study'),
+        (LECTURE, 'Lecture'),
+    ]
+
+    
+    activity_type = models.CharField(
+        max_length=50,
+        choices=ACTIVITY_TYPE_CHOICES,
+        default=LAB_EXERCISE,
+    )
+    
     """A lesson contains one or more tasks."""
     lesson_title = models.CharField(max_length=255)
     tasks = models.ManyToManyField(Task)
@@ -235,46 +268,17 @@ class Session(models.Model):
         (THEORY, 'Theory'),
         (PRACTICAL, 'Practical'),
     ]
-
-    LAB_EXERCISE = 'Lab Exercise'
-    ASSIGNMENT = 'Assignment'
-    ASSESSMENT = 'Assessment'
-    PROJECT = 'Project'
-    MCQ = 'MCQ'
-    PRESENTATION = 'Presentation'
-    WORKSHOP = 'Workshop'
-    PRACTICAL_LAB = 'Practical Lab'
-    QUIZ = 'Quiz'
-    CASE_STUDY = 'Case Study'
-
-    ACTIVITY_TYPE_CHOICES = [
-        (LAB_EXERCISE, 'Lab Exercise'),
-        (ASSIGNMENT, 'Assignment'),
-        (ASSESSMENT, 'Assessment'),
-        (PROJECT, 'Project'),
-        (MCQ, 'Multiple-Choice Questions (MCQs)'),
-        (PRESENTATION, 'Presentation'),
-        (WORKSHOP, 'Workshop'),
-        (PRACTICAL_LAB, 'Practical Lab'),
-        (QUIZ, 'Quiz'),
-        (CASE_STUDY, 'Case Study'),
-    ]
-
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     session_type = models.CharField(
         max_length=10,
         choices=SESSION_TYPE_CHOICES,
         default=THEORY,
     )
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     session_date = models.DateField(default=timezone.now)
     start_time = models.TimeField(default=timezone.now)
     duration_minutes = models.PositiveIntegerField()
     end_time = models.TimeField(blank=True, null=True)
-    activity_type = models.CharField(
-        max_length=50,
-        choices=ACTIVITY_TYPE_CHOICES,
-        default=LAB_EXERCISE,
-    )
+    
     trainer_name = models.ForeignKey(User, on_delete=models.CASCADE, related_name='training', limit_choices_to={'groups__name': 'Teacher'})
     demos = models.ManyToManyField(User, related_name='lab_assistants', limit_choices_to={'groups__name': 'Lab Assistant'}, blank=True)
     attendance = models.PositiveIntegerField(help_text="Number of students attending this session")
@@ -297,7 +301,7 @@ class Session(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"Session on {self.session_date} for {self.lesson.lesson_title} ({self.activity_type})"
+        return f"Session on {self.session_date} for {self.lesson.lesson_title} "
 
 
 

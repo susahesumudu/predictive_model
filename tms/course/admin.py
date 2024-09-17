@@ -98,22 +98,46 @@ class SessionAdmin(admin.ModelAdmin):
 class SessionSettingAdmin(admin.ModelAdmin):
     list_display = ['max_duration_minutes']
 
+
 class AttendanceForm(forms.ModelForm):
     class Meta:
         model = Attendance
-        fields = '__all__'
+        fields = ['batch', 'student', 'date', 'is_present']
 
     def __init__(self, *args, **kwargs):
+        batch_id = kwargs.pop('batch_id', None)
         super(AttendanceForm, self).__init__(*args, **kwargs)
-        # Filter student field to only show users in the 'Student' group
-        self.fields['student'].queryset = User.objects.filter(groups__name='Student')
 
+        # If a batch is selected, filter the students to show only those in the selected batch
+        if batch_id:
+            self.fields['student'].queryset = User.objects.filter(
+                enrolled_batches__id=batch_id, groups__name='Student'
+            )
+        else:
+            # If no batch is selected, don't show any students initially
+            self.fields['student'].queryset = User.objects.none()
+
+
+@admin.register(Attendance)
 class AttendanceAdmin(admin.ModelAdmin):
     form = AttendanceForm
-    list_display = ('student', 'batch', 'date', 'is_present')
+    list_display = ('batch', 'student', 'date', 'is_present')
     search_fields = ('student__username', 'batch__batch_name')
     list_filter = ('date', 'is_present')
 
+    # Override the get_form method to pass batch_id to the form during record creation/editing
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj=obj, **kwargs)
+
+        # If we're editing an existing attendance record, pass the batch to filter students
+        if obj:
+            form = form(request, batch_id=obj.batch_id)
+        elif 'batch' in request.GET:
+            # If we're adding a new attendance record and a batch is selected
+            batch_id = request.GET.get('batch')
+            form = form(request, batch_id=batch_id)
+
+        return form
 
 
 
@@ -133,7 +157,6 @@ admin.site.register(Module,ModuleAdmin)
 
 
 # Register the Attendance model with the admin
-admin.site.register(Attendance, AttendanceAdmin)
-
+#admin.site.register(Attendance, AttendanceAdmin)
 
 

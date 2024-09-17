@@ -171,3 +171,12 @@ class ModuleDetailView(DetailView):
     template_name = 'module_lesson_plans.html'
     context_object_name = 'module'
 
+from django.http import JsonResponse
+from .models import User
+
+def get_students(request):
+    batch_id = request.GET.get('batch_id')
+    students = User.objects.filter(enrolled_batches__id=batch_id, groups__name='Student')
+    student_list = [{'id': student.id, 'name': student.username} for student in students]
+    return JsonResponse({'students': student_list})
+

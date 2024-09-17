@@ -2,6 +2,10 @@ from django.db import models
 from django.contrib.auth.models import User, Group
 from django.core.exceptions import ValidationError
 
+from datetime import timedelta
+
+from django.utils import timezone  # Make sure to import timezone here
+
 def validate_min_students(value):
     """ Custom validator to ensure minimum students per batch """
     if value < 5:  # Example minimum students
@@ -11,6 +15,12 @@ def validate_max_students(value):
     """ Custom validator to ensure maximum students per batch """
     if value > 30:  # Example maximum students
         raise ValidationError(f'Maximum number of students is 30.')
+
+class SessionSetting(models.Model):
+    max_duration_minutes = models.PositiveIntegerField(help_text="Maximum duration allowed for a session in minutes")
+    
+    def __str__(self):
+        return f"Max Duration: {self.max_duration_minutes} minutes"
 
 
 class Course(models.Model):
@@ -164,7 +174,6 @@ class Task(models.Model):
     # Basic task information
     task_name = models.CharField(max_length=255)
     total_hours = models.PositiveIntegerField(help_text="Total hours for this task")
-    is_theory = models.BooleanField(default=True, help_text="Is this a theory task?")
 
     # Additional fields for lesson plans (these can be optional)
     learning_objectives = models.TextField(help_text="What students will learn", blank=True, null=True)
@@ -173,7 +182,7 @@ class Task(models.Model):
     assessment_activities = models.TextField(help_text="Assessment activities to evaluate student learning", blank=True, null=True)
 
     def __str__(self):
-        return f"{self.task_name} ({'Theory' if self.is_theory else 'Practical'})"
+        return f"{self.task_name} "
 
     def clean(self):
         """
@@ -196,6 +205,100 @@ class Task(models.Model):
 
         # Proceed to save the task
         super().save(*args, **kwargs)
+
+
+
+
+class Lesson(models.Model):
+    """A lesson contains one or more tasks."""
+    lesson_title = models.CharField(max_length=255)
+    tasks = models.ManyToManyField(Task)
+
+    def __str__(self):
+        return f"Lesson: {self.lesson_title}"
+
+
+class SessionSetting(models.Model):
+    """Settings for the session, like maximum duration."""
+    max_duration_minutes = models.PositiveIntegerField(help_text="Maximum duration allowed for a session in minutes")
+
+    def __str__(self):
+        return f"Max Duration: {self.max_duration_minutes} minutes"
+
+
+class Session(models.Model):
+    """A session is linked to lessons and performs an activity."""
+    THEORY = 'Theory'
+    PRACTICAL = 'Practical'
+
+    SESSION_TYPE_CHOICES = [
+        (THEORY, 'Theory'),
+        (PRACTICAL, 'Practical'),
+    ]
+
+    LAB_EXERCISE = 'Lab Exercise'
+    ASSIGNMENT = 'Assignment'
+    ASSESSMENT = 'Assessment'
+    PROJECT = 'Project'
+    MCQ = 'MCQ'
+    PRESENTATION = 'Presentation'
+    WORKSHOP = 'Workshop'
+    PRACTICAL_LAB = 'Practical Lab'
+    QUIZ = 'Quiz'
+    CASE_STUDY = 'Case Study'
+
+    ACTIVITY_TYPE_CHOICES = [
+        (LAB_EXERCISE, 'Lab Exercise'),
+        (ASSIGNMENT, 'Assignment'),
+        (ASSESSMENT, 'Assessment'),
+        (PROJECT, 'Project'),
+        (MCQ, 'Multiple-Choice Questions (MCQs)'),
+        (PRESENTATION, 'Presentation'),
+        (WORKSHOP, 'Workshop'),
+        (PRACTICAL_LAB, 'Practical Lab'),
+        (QUIZ, 'Quiz'),
+        (CASE_STUDY, 'Case Study'),
+    ]
+
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+    session_type = models.CharField(
+        max_length=10,
+        choices=SESSION_TYPE_CHOICES,
+        default=THEORY,
+    )
+    session_date = models.DateField(default=timezone.now)
+    start_time = models.TimeField(default=timezone.now)
+    duration_minutes = models.PositiveIntegerField()
+    end_time = models.TimeField(blank=True, null=True)
+    activity_type = models.CharField(
+        max_length=50,
+        choices=ACTIVITY_TYPE_CHOICES,
+        default=LAB_EXERCISE,
+    )
+    trainer_name = models.ForeignKey(User, on_delete=models.CASCADE, related_name='training', limit_choices_to={'groups__name': 'Teacher'})
+    demos = models.ManyToManyField(User, related_name='lab_assistants', limit_choices_to={'groups__name': 'Lab Assistant'}, blank=True)
+    attendance = models.PositiveIntegerField(help_text="Number of students attending this session")
+    additional_notes = models.TextField(blank=True, help_text="Additional session notes, observations, or comments")
+    created_at = models.DateTimeField(default=timezone.now)
+
+    session_setting = models.ForeignKey(SessionSetting, on_delete=models.SET_NULL, null=True, blank=True)
+
+    def clean(self):
+        if self.session_setting and self.duration_minutes > self.session_setting.max_duration_minutes:
+            raise ValidationError(f"Session duration exceeds the maximum allowed duration of {self.session_setting.max_duration_minutes} minutes.")
+
+    def save(self, *args, **kwargs):
+        if self.start_time and self.duration_minutes:
+            session_datetime = timezone.datetime.combine(self.session_date, self.start_time)
+            end_datetime = session_datetime + timedelta(minutes=self.duration_minutes)
+            self.end_time = end_datetime.time()
+
+        self.clean()  # Validate before saving
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Session on {self.session_date} for {self.lesson.lesson_title} ({self.activity_type})"
+
 
 
 class Batch(models.Model):
@@ -264,14 +367,5 @@ class Schedule(models.Model):
         return f"{self.module_name} ({self.start_date} to {self.end_date})"
 
 
-
-
-class Session(models.Model):
-    task = models.ForeignKey(Task, on_delete=models.CASCADE)
-    session_date = models.DateField()
-    duration_minutes = models.PositiveIntegerField()
-
-    def __str__(self):
-        return f"Session on {self.session_date} for task {self.task.task_name} ({self.duration_minutes} minutes)"
 
 

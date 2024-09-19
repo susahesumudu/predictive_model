@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Attendance Dashboard</h2>
+
+    <h4>Total Students: {{ total_students }}</h4>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>Total Present</th>
+                <th>Total Absent</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in attendance_data %}
+            <tr>
+                <td>{{ record.student__name }}</td>
+                <td>{{ record.total_present }}</td>
+                <td>{{ record.total_absent }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <canvas id="attendanceChart"></canvas>
+</div>
+
+<!-- Include Chart.js for attendance chart -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var ctx = document.getElementById('attendanceChart').getContext('2d');
+    var attendanceChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [{% for record in attendance_data %}'{{ record.student__name }}',{% endfor %}],
+            datasets: [{
+                label: 'Present Days',
+                data: [{% for record in attendance_data %}{{ record.total_present }},{% endfor %}],
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }, {
+                label: 'Absent Days',
+                data: [{% for record in attendance_data %}{{ record.total_absent }},{% endfor %}],
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}
+

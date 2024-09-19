@@ -1,0 +1,11 @@
+<h1>{{ profile.full_name }}</h1>
+<p>Date of Birth: {{ profile.date_of_birth }}</p>
+<p>Address: {{ profile.address }}</p>
+<p>Phone Number: {{ profile.phone_number }}</p>
+<p>Email: {{ profile.email }}</p>
+<p>Course: {{ profile.course }}</p>
+<p>Start Date: {{ profile.start_date }}</p>
+<p>End Date: {{ profile.end_date }}</p>
+
+<a href="{% url 'update_profile' profile.pk %}">Edit Profile</a>
+

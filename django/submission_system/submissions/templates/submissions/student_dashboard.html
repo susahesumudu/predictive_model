@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+</head>
+<body>
+    <h1>Welcome to the Student Dashboard, {{ user.username }}!</h1>
+
+    <ul>
+        <li><a href="{% url 'submit_exercise' %}">Submit Your Work</a></li>
+        <li><a href="{% url 'student_status' %}?student_name={{ user.username }}">Check Submission Status</a></li>
+    </ul>
+
+    <h2>Scheduled Exercises</h2>
+
+    <table border="1">
+        <tr>
+            <th>Title</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Deadline</th>
+        </tr>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.title }}</td>
+            <td>{{ task.task_type }}</td>
+            <td>{{ task.description }}</td>
+            <td>{{ task.submission_deadline }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+   <form id="logout-form" action="{% url 'logout' %}" method="POST">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+</form>
+
+</body>
+</html>
+

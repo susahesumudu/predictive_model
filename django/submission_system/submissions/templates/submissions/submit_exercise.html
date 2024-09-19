@@ -1,0 +1,33 @@
+<h1>Submit Your Exercise</h1>
+<form method="POST">
+    {% csrf_token %}
+    <label for="student_name">Student Name:</label>
+    <input type="text" name="student_name" required><br><br>
+
+    <label for="task_id">Select Task:</label>
+    <select name="task_id">
+        {% for task in tasks %}
+        <option value="{{ task.id }}">{{ task.title }} (Deadline: {{ task.submission_deadline }})</option>
+        {% endfor %}
+    </select><br><br>
+
+    <label for="level_of_completion">Level of Completion:</label>
+    <select name="level_of_completion">
+        <option value="100%">100%</option>
+        <option value="75-99%">75-99%</option>
+        <option value="50-74%">50-74%</option>
+        <option value="<50%">&lt;50%</option>
+    </select><br><br>
+
+    <label for="quality_of_work">Quality of Work (1-5):</label>
+    <input type="number" name="quality_of_work" min="1" max="5" required><br><br>
+
+    <label for="learning_outcome">What Did You Learn?</label><br>
+    <textarea name="learning_outcome" required></textarea><br><br>
+
+    <label for="challenges">Challenges (Optional):</label><br>
+    <textarea name="challenges"></textarea><br><br>
+
+    <button type="submit">Submit Exercise</button>
+</form>
+

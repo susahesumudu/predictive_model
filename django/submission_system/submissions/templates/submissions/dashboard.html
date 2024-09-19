@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>Welcome, {{ user.username }}!</h1>
+
+    {% if is_teacher %}
+        <h2>Teacher Dashboard</h2>
+        <p>Here are the exercises you need to review:</p>
+        <table border="1">
+            <tr>
+                <th>Student</th>
+                <th>Exercise Title</th>
+                <th>Submission Time</th>
+                <th>Action</th>
+            </tr>
+            {% for exercise in exercises %}
+            <tr>
+                <td>{{ exercise.student_name }}</td>
+                <td>{{ exercise.exercise_title }}</td>
+                <td>{{ exercise.submission_time }}</td>
+                <td><a href="{% url 'review_exercise' exercise.id %}">Review</a></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No exercises to review.</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    {% elif is_student %}
+        <h2>Student Dashboard</h2>
+        <p>Here are your scheduled tasks:</p>
+        <table border="1">
+            <tr>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Deadline</th>
+            </tr>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ task.title }}</td>
+                <td>{{ task.task_type }}</td>
+                <td>{{ task.description }}</td>
+                <td>{{ task.submission_deadline }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No tasks available.</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    {% else %}
+        <h2>General Dashboard</h2>
+        <p>Welcome to the system. You do not have a specific role assigned.</p>
+    {% endif %}
+
+    <p><a href="{% url 'logout' %}">Logout</a></p>
+</body>
+</html>
+

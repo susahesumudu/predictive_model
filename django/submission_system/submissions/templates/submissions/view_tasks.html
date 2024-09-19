@@ -1,0 +1,20 @@
+<h1>Upcoming Tasks</h1>
+<table border="1">
+    <tr>
+        <th>Title</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Deadline</th>
+    </tr>
+    {% for task in tasks %}
+    <tr>
+        <td>{{ task.title }}</td>
+        <td>{{ task.task_type }}</td>
+        <td>{{ task.description }}</td>
+        <td>{{ task.submission_deadline }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<p><a href="{% url 'submit_exercise' %}">Submit Your Work</a></p>
+

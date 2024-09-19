@@ -1,0 +1,21 @@
+<!-- users/templates/users/dashboard.html -->
+{% extends "base.html" %}
+
+{% block title %}Welcome to Your Dashboard{% endblock %}
+
+{% block content %}
+<h2>Welcome, {{ username }}!</h2>
+
+<p>You are a member of the following groups:</p>
+<ul>
+    {% if groups %}
+        {% for group in groups %}
+            <li>{{ group.name }}</li>
+        {% endfor %}
+    {% else %}
+        <li>You are not part of any group.</li>
+    {% endif %}
+</ul>
+{% endblock %}
+
+

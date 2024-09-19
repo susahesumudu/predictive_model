@@ -1,0 +1,18 @@
+<h1>Your Exercise Submissions</h1>
+<table border="1">
+    <tr>
+        <th>Exercise Title</th>
+        <th>Status</th>
+        <th>Grade</th>
+        <th>Teacher Feedback</th>
+    </tr>
+    {% for exercise in exercises %}
+    <tr>
+        <td>{{ exercise.exercise_title }}</td>
+        <td>{{ exercise.status }}</td>
+        <td>{{ exercise.grade or 'Not Graded Yet' }}</td>
+        <td>{{ exercise.teacher_feedback or 'Pending Review' }}</td>
+    </tr>
+    {% endfor %}
+</table>
+

@@ -1,0 +1,22 @@
+<h1>Review Exercises</h1>
+<table>
+    <tr>
+        <th>Student Name</th>
+        <th>Exercise Title</th>
+        <th>Submission Time</th>
+        <th>Deadline</th>
+        <th>Completed On Time</th>
+        <th>Action</th>
+    </tr>
+    {% for exercise in exercises %}
+    <tr>
+        <td>{{ exercise.student_name }}</td>
+        <td>{{ exercise.exercise_title }}</td>
+        <td>{{ exercise.submission_time }}</td>
+        <td>{{ exercise.submission_deadline }}</td>
+        <td>{{ exercise.completed_on_time }}</td>
+        <td><a href="{% url 'review_exercise' exercise.id %}">Review</a></td>
+    </tr>
+    {% endfor %}
+</table>
+

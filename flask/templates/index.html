@@ -1,0 +1,27 @@
+<h1>Submit Your Exercise</h1>
+<form action="/" method="POST">
+    <input type="text" name="student_name" placeholder="Student Name" required>
+    <input type="text" name="exercise_title" placeholder="Exercise Title" required>
+    <label for="submission_deadline">Deadline:</label><br>
+    <input type="datetime-local" name="submission_deadline" required><br><br>
+
+    <label for="level_of_completion">Level of Completion:</label><br>
+    <select id="level_of_completion" name="level_of_completion">
+        <option value="100%">100%</option>
+        <option value="75-99%">75-99%</option>
+        <option value="50-74%">50-74%</option>
+        <option value="<50%">&lt;50%</option>
+    </select><br><br>
+
+    <label for="quality_of_work">Quality of Work (1-5):</label><br>
+    <input type="number" id="quality_of_work" name="quality_of_work" min="1" max="5" required><br><br>
+
+    <label for="learning_outcome">What Did You Learn:</label><br>
+    <textarea id="learning_outcome" name="learning_outcome" required></textarea><br><br>
+
+    <label for="challenges">Challenges (Optional):</label><br>
+    <textarea id="challenges" name="challenges"></textarea><br><br>
+
+    <button type="submit">Submit Exercise</button>
+</form>
+

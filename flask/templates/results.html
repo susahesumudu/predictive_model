@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise Results</title>
+</head>
+<body>
+    <h1>Exercise Results</h1>
+    <table border="1">
+        <tr>
+            <th>Student Name</th>
+            <th>Exercise Title</th>
+            <th>Completed On Time</th>
+            <th>Level of Completion</th>
+            <th>Quality of Work</th>
+            <th>Learning Outcome</th>
+            <th>Challenges</th>
+            <th>Teacher Feedback</th>
+            <th>Rating</th>
+        </tr>
+        {% for exercise in exercises %}
+        <tr>
+            <td>{{ exercise.student_name }}</td>
+            <td>{{ exercise.exercise_title }}</td>
+            <td>{{ exercise.completed_on_time }}</td>
+            <td>{{ exercise.level_of_completion }}</td>
+            <td>{{ exercise.quality_of_work }}</td>
+            <td>{{ exercise.learning_outcome }}</td>
+            <td>{{ exercise.challenges }}</td>
+            <td>{{ exercise.teacher_feedback }}</td>
+            <td>{{ exercise.rating }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="/">Go Back to Submit Form</a>
+</body>
+</html>
+

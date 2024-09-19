@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard</title>
+</head>
+<body>
+    <h1>Welcome to the Teacher Dashboard, {{ user.username }}!</h1>
+
+    <ul>
+        <li><a href="{% url 'schedule_task' %}">Schedule New Task (Exercise, Assignment, etc.)</a></li>
+        <li><a href="{% url 'review_exercises' %}">Review Submitted Exercises</a></li>
+    </ul>
+
+   <form id="logout-form" action="{% url 'logout' %}" method="POST">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+</form>
+
+</body>
+</html>
+

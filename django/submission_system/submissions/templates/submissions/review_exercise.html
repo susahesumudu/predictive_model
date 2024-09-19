@@ -1,0 +1,15 @@
+<h1>Review Exercise for {{ exercise.student_name }}</h1>
+<p>Exercise Title: {{ exercise.exercise_title }}</p>
+<p>Learning Outcome: {{ exercise.learning_outcome }}</p>
+<p>Challenges: {{ exercise.challenges }}</p>
+
+<form method="POST">
+    {% csrf_token %}
+    <label for="teacher_feedback">Teacher Feedback:</label><br>
+    <textarea name="teacher_feedback" required></textarea><br><br>
+
+    <label for="grade">Grade (1-100):</label>
+    <input type="number" name="grade" min="0" max="100" required><br><br>
+
+    <button type="submit">Submit Review</button>
+</form>

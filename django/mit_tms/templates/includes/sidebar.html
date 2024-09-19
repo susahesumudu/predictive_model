@@ -1,0 +1,57 @@
+<!-- templates/includes/sidebar.html -->
+
+{% if user.is_authenticated %}
+    <div class="bg-dark text-white p-3">
+        <!-- Site Name -->
+        <h4 class="mb-3">My Django App</h4>
+        <!-- Logged-in User's Name -->
+        <p class="mb-4">Logged in as: {{ user.username }}</p>
+
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link text-white" href="#">Overview</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="#">Profile</a>
+            </li>
+
+            {% for group in user.groups.all %}
+                {% if group.name == 'Admin' %}
+                    <!-- Features for Admins -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Manage Users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Site Settings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">View Reports</a>
+                    </li>
+                {% elif group.name == 'Staff' %}
+                    <!-- Features for Staff -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Manage Students</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Create Assignments</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Grade Submissions</a>
+                    </li>
+                {% elif group.name == 'Student' %}
+                    <!-- Features for Students -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">View Assignments</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Submit Work</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">View Grades</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+

@@ -1,0 +1,18 @@
+<!-- templates/submissions/review_exercises.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Pending Exercises for Review</h2>
+    <ul class="list-group">
+        {% for exercise in exercises %}
+            <li class="list-group-item">
+                <h5>{{ exercise.student_name }} - {{ exercise.exercise_title }}</h5>
+                <p>Status: {{ exercise.status }}</p>
+                <a href="{% url 'review_exercise' exercise.id %}" class="btn btn-primary">Review</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
+

@@ -2,14 +2,24 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Login{% endblock %}
+<!-- templates/registration/login.html -->
+
+
 
 {% block content %}
-<h2>Login</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
-</form>
+<div class="d-flex justify-content-center align-items-center" style="height: 60vh;">
+    <div class="card" style="width: 400px;">
+        <div class="card-body">
+            <h3 class="card-title text-center mb-4">Login</h3>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}
 

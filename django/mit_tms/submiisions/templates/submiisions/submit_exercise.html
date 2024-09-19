@@ -1,0 +1,32 @@
+<!-- templates/submissions/submit_exercise.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Submit Exercise</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="task">Select Task:</label>
+        <select name="task_id" class="form-control mb-3">
+            {% for task in tasks %}
+                <option value="{{ task.id }}">{{ task.title }} ({{ task.task_type }})</option>
+            {% endfor %}
+        </select>
+
+        <label for="level_of_completion">Level of Completion:</label>
+        <input type="text" name="level_of_completion" class="form-control mb-3">
+
+        <label for="quality_of_work">Quality of Work:</label>
+        <input type="number" name="quality_of_work" class="form-control mb-3">
+
+        <label for="learning_outcome">Learning Outcome:</label>
+        <textarea name="learning_outcome" class="form-control mb-3"></textarea>
+
+        <label for="challenges">Challenges (optional):</label>
+        <textarea name="challenges" class="form-control mb-3"></textarea>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock %}
+

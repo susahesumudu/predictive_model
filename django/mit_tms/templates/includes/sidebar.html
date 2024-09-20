@@ -26,6 +26,9 @@
                     <li class="nav-item">
                         <a class="nav-link text-white" href="#">View Reports</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/admin/">Admin </a>
+                    </li>
                 {% elif group.name == 'Staff' %}
                     <!-- Features for Staff -->
                     <li class="nav-item">
@@ -38,7 +41,10 @@
                         <a class="nav-link text-white" href="#">Grade Submissions</a>
                     </li>
                   {% elif group.name == 'Teacher' %}
-                    <!-- Features for Staff -->
+                    <!-- Teacher-specific links -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="{% url 'schedule_task' %}">Schedule Tasks</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="#">Manage Students</a>
                     </li>
@@ -48,10 +54,11 @@
                     <li class="nav-item">
                         <a class="nav-link text-white" href="#">Grade Submissions</a>
                     </li>
+                    </li>
                   {% elif group.name == 'Student' %}
                     <!-- Features for Students -->
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">View Assignments</a>
+                        <a class="nav-link text-white" href="{% url 'student_dashboard' %}">View Assignments</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="#">Submit Work</a>

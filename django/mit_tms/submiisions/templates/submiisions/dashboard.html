@@ -1,0 +1,93 @@
+<!-- users/templates/users/dashboard.html -->
+{% extends "base.html" %}
+
+{% block title %}Teacher Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Welcome, {{ user.username }}!</h2>
+
+    <!-- Check if the user is a teacher using the is_teacher flag -->
+    {% if is_teacher %}
+
+        <!-- Exercises Section -->
+        <h3>Your Scheduled Exercises</h3>
+        {% if exercises %}
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Submission Deadline</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for exercise in exercises %}
+                    <tr>
+                        <td>{{ exercise.title }}</td>
+                        <td>{{ exercise.description }}</td>
+                        <td>{{ exercise.submission_deadline }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No exercises scheduled yet.</p>
+        {% endif %}
+
+        <!-- Assignments Section -->
+        <h3>Your Scheduled Assignments</h3>
+        {% if assignments %}
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Submission Deadline</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for assignment in assignments %}
+                    <tr>
+                        <td>{{ assignment.title }}</td>
+                        <td>{{ assignment.description }}</td>
+                        <td>{{ assignment.submission_deadline }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No assignments scheduled yet.</p>
+        {% endif %}
+
+        <!-- Projects Section -->
+        <h3>Your Scheduled Projects</h3>
+        {% if projects %}
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Submission Deadline</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for project in projects %}
+                    <tr>
+                        <td>{{ project.title }}</td>
+                        <td>{{ project.description }}</td>
+                        <td>{{ project.submission_deadline }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No projects scheduled yet.</p>
+        {% endif %}
+
+    {% else %}
+        <p>You are not authorized to view this page.</p>
+    {% endif %}
+</div>
+{% endblock %}
+

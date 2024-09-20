@@ -1,0 +1,58 @@
+<!-- submiisions/templates/submiisions/student_dashboard.html -->
+{% extends "base.html" %}
+
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Welcome, {{ user.username }}!</h2>
+
+    <!-- Display the tasks assigned to the student's batch -->
+    <h3>Your Tasks</h3>
+    {% if tasks %}
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Task Type</th>
+                    <th>Description</th>
+                    <th>Submission Deadline</th>
+                    <th>Upload Work</th>
+                    <th>Your Submission</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                <tr>
+                    <td>{{ task.title }}</td>
+                    <td>{{ task.task_type }}</td>
+                    <td>{{ task.description }}</td>
+                    <td>{{ task.submission_deadline }}</td>
+
+                    <!-- Upload form -->
+                    <td>
+                        <form method="post" enctype="multipart/form-data" action="{% url 'upload_submission' task.id %}">
+                            {% csrf_token %}
+                            <input type="file" name="file" required>
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </form>
+                    </td>
+
+                    <!-- Show the student's submission for this task -->
+                    <td>
+                        {% for submission in submissions %}
+                            {% if submission.task.id == task.id %}
+                                <a href="{{ submission.file.url }}">View Your Submission</a>
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No tasks assigned yet.</p>
+    {% endif %}
+</div>
+{% endblock %}
+

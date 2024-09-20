@@ -5,7 +5,6 @@ from django.views.generic import CreateView, UpdateView, TemplateView
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
-
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from .models import Profile
 
@@ -52,7 +51,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
 
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'users/dashboard.html'
-
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user

@@ -3,29 +3,49 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2>Submit Exercise</h2>
-    <form method="post">
+    <h2>Submit Your Exercise</h2>
+    <form method="post" novalidate>
         {% csrf_token %}
-        <label for="task">Select Task:</label>
-        <select name="task_id" class="form-control mb-3">
-            {% for task in tasks %}
-                <option value="{{ task.id }}">{{ task.title }} ({{ task.task_type }})</option>
-            {% endfor %}
-        </select>
+        <!-- Task Selection -->
+        <div class="form-group">
+            <label for="task">Select Task:</label>
+            <select name="task_id" class="form-control mb-3" aria-label="Select the task you are submitting for" required>
+                {% for task in tasks %}
+                    <option value="{{ task.id }}">{{ task.title }} ({{ task.task_type }})</option>
+                {% endfor %}
+            </select>
+            <div class="invalid-feedback">Please select a task.</div>
+        </div>
 
-        <label for="level_of_completion">Level of Completion:</label>
-        <input type="text" name="level_of_completion" class="form-control mb-3">
+        <!-- Level of Completion -->
+        <div class="form-group">
+            <label for="level_of_completion">Level of Completion:</label>
+            <input type="text" name="level_of_completion" class="form-control mb-3" placeholder="e.g. Completed 80%" required>
+            <div class="invalid-feedback">Please enter the level of completion.</div>
+        </div>
 
-        <label for="quality_of_work">Quality of Work:</label>
-        <input type="number" name="quality_of_work" class="form-control mb-3">
+        <!-- Quality of Work -->
+        <div class="form-group">
+            <label for="quality_of_work">Quality of Work:</label>
+            <input type="number" name="quality_of_work" class="form-control mb-3" placeholder="Rate your work from 1 to 10" required min="1" max="10">
+            <div class="invalid-feedback">Please provide a quality rating between 1 and 10.</div>
+        </div>
 
-        <label for="learning_outcome">Learning Outcome:</label>
-        <textarea name="learning_outcome" class="form-control mb-3"></textarea>
+        <!-- Learning Outcome -->
+        <div class="form-group">
+            <label for="learning_outcome">Learning Outcome:</label>
+            <textarea name="learning_outcome" class="form-control mb-3" placeholder="Describe what you have learned from this task" required></textarea>
+            <div class="invalid-feedback">Please describe the learning outcome.</div>
+        </div>
 
-        <label for="challenges">Challenges (optional):</label>
-        <textarea name="challenges" class="form-control mb-3"></textarea>
+        <!-- Challenges (optional) -->
+        <div class="form-group">
+            <label for="challenges">Challenges (optional):</label>
+            <textarea name="challenges" class="form-control mb-3" placeholder="List any challenges you faced"></textarea>
+        </div>
 
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">Submit Exercise</button>
     </form>
 </div>
 {% endblock %}

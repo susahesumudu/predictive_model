@@ -4,24 +4,41 @@
 {% block content %}
 <div class="container mt-4">
     <h2>Review Exercise</h2>
-    <form method="post">
+    <form method="post" novalidate>
         {% csrf_token %}
-        <p>Student Name: {{ exercise.student_name }}</p>
-        <p>Exercise Title: {{ exercise.exercise_title }}</p>
+        
+        <!-- Student and Exercise Info -->
+        <div class="mb-3">
+            <p><strong>Student Name:</strong> {{ exercise.student.username }}</p>
+            <p><strong>Exercise Title:</strong> {{ exercise.exercise_title }}</p>
+        </div>
 
-        <label for="teacher_feedback">Teacher Feedback:</label>
-        <textarea name="teacher_feedback" class="form-control mb-3"></textarea>
+        <!-- Teacher Feedback -->
+        <div class="form-group">
+            <label for="teacher_feedback">Teacher Feedback:</label>
+            <textarea name="teacher_feedback" class="form-control mb-3" placeholder="Provide your feedback" required></textarea>
+            <div class="invalid-feedback">Please provide feedback for the student.</div>
+        </div>
 
-        <label for="grade">Grade:</label>
-        <input type="number" name="grade" class="form-control mb-3">
+        <!-- Grade -->
+        <div class="form-group">
+            <label for="grade">Grade:</label>
+            <input type="number" name="grade" class="form-control mb-3" placeholder="Enter grade out of 100" required min="1" max="100">
+            <div class="invalid-feedback">Please enter a valid grade (1-100).</div>
+        </div>
 
-        <!-- Add rubrics for assignments -->
-        <label for="rubric_criteria1">Rubric Criteria 1:</label>
-        <input type="number" name="rubric_criteria1" class="form-control mb-3">
+        <!-- Rubric Criteria (Optional) -->
+        <div class="form-group">
+            <label for="rubric_criteria1">Rubric Criteria 1 (optional):</label>
+            <input type="number" name="rubric_criteria1" class="form-control mb-3" placeholder="Score for Criteria 1 (1-10)" min="1" max="10">
+        </div>
 
-        <label for="rubric_criteria2">Rubric Criteria 2:</label>
-        <input type="number" name="rubric_criteria2" class="form-control mb-3">
+        <div class="form-group">
+            <label for="rubric_criteria2">Rubric Criteria 2 (optional):</label>
+            <input type="number" name="rubric_criteria2" class="form-control mb-3" placeholder="Score for Criteria 2 (1-10)" min="1" max="10">
+        </div>
 
+        <!-- Submit Button -->
         <button type="submit" class="btn btn-success">Submit Review</button>
     </form>
 </div>

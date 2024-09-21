@@ -9,9 +9,7 @@
    
 
         <ul class="nav flex-column">
-            <li class="nav-item">
-                <a class="nav-link text-white" href="#">Overview</a>
-            </li>
+         
            
 
             {% for group in user.groups.all %}
@@ -43,16 +41,16 @@
                   {% elif group.name == 'Teacher' %}
                     <!-- Teacher-specific links -->
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="{% url 'schedule_task' %}">Schedule Tasks</a>
+                        <a class="nav-link text-white" href="{% url 'schedule_task' %}">Schedule Activity</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Manage Students</a>
+                        <a class="nav-link text-white" href="#">View Activities</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="#">Create Assignments</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Grade Submissions</a>
+                        <a class="nav-link text-white" href="#">Gradeing Students</a>
                     </li>
                     </li>
                   {% elif group.name == 'Student' %}

@@ -4,10 +4,28 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<h1>Welcome to the Home Page</h1>
-<p>This is the home page of the website.</p>
+<div class="container mt-5">
+    <div class="hero bg-light p-5 text-center">
+        <h1 class="display-4">Welcome to MIT Computer Training Center</h1>
+        <p class="lead">We provide high-quality IT training to help you succeed in your career.</p>
+        <a class="btn btn-primary btn-lg mt-3" href="#" role="button">Explore Our Courses</a>
+    </div>
 
-<!-- templates/base.html -->
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="card">
+                <img src="https://source.unsplash.com/400x300/?technology" class="card-img-top" alt="Tech Image">
+                <div class="card-body">
+                    <h5 class="card-title">Comprehensive Courses</h5>
+                    <p class="card-text">Our courses are designed to equip you with the skills needed for the modern tech world.</p>
+                    <a href="#" class="btn btn-outline-primary">Learn More</a>
+                </div>
+            </div>
+        </div>
+        <!-- Repeat for more cards -->
+    </div>
+</div>
+
 
 
 {% endblock %}

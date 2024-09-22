@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard</title>
+</head>
+<body>
+    <h1>Welcome to the Teacher Dashboard, {{ teacher.user.username }}</h1>
+
+    <h2>Scheduled Activities</h2>
+    <ul>
+        {% for activity in activities %}
+        <li>
+            {{ activity.name }} - {{ activity.description }} (Due: {{ activity.due_date }})
+            <a href="{% url 'schedule_activity_with_id' activity.id %}">Edit</a>
+        </li>
+        {% empty %}
+        <li>No activities found</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'schedule_activity' %}">Schedule New Activity</a>
+
+    <h2>Student Submissions</h2>
+    <ul>
+        {% for submission in submissions %}
+        <li>{{ submission.student.name }} - {{ submission.activity.name }} (Submitted: {{ submission.submitted_at }})</li>
+        {% empty %}
+        <li>No submissions found</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+

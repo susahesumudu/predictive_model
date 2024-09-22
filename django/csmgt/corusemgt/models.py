@@ -45,7 +45,7 @@ class Activity(models.Model):
     task = models.ForeignKey('Task', on_delete=models.CASCADE, related_name='activities')
     title = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
-    
+    deadline = models.DateField()  # Deadline for the activity
     # New fields for activity type and session type
     activity_type = models.CharField(max_length=50, choices=ACTIVITY_TYPE_CHOICES)
     session_type = models.CharField(max_length=50, choices=SESSION_TYPE_CHOICES)
@@ -55,6 +55,8 @@ class Activity(models.Model):
     
     def __str__(self):
         return f"{self.title} ({self.activity_type}, {self.session_type}, {self.duration_hours} hrs)"
+
+
 
 
 # Batches, Sessions, and Students

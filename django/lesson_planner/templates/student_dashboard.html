@@ -1,0 +1,17 @@
+<h1>Welcome, {{ student.name }}</h1>
+
+<h2>Your Tasks</h2>
+<ul>
+    {% for task in tasks %}
+    <li>{{ task.name }} ({{ task.day }}):
+        <ul>
+            {% for activity in task.activities.all %}
+            <li>{{ activity.name }} ({{ activity.duration }} mins)
+                <a href="{% url 'submit_task' activity.id %}">Submit Work</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </li>
+    {% endfor %}
+</ul>
+

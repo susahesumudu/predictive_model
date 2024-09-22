@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard</title>
+</head>
+<body>
+    <h1>Welcome, {{ teacher.user.username }}!</h1>
+
+    <h2>Scheduled Activities</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Activity Name</th>
+                <th>Description</th>
+                <th>Due Date</th>
+                <th>Schedule New Activity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for activity in activities %}
+                <tr>
+                    <td>{{ activity.name }}</td>
+                    <td>{{ activity.description }}</td>
+                    <td>{{ activity.due_date }}</td>
+                    <td><a href="{% url 'schedule_activity' activity.id %}">Schedule</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Submissions to Review</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>Activity Name</th>
+                <th>Submitted On</th>
+                <th>Review Submission</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for submission in submissions %}
+                <tr>
+                    <td>{{ submission.student.name }}</td>
+                    <td>{{ submission.activity.name }}</td>
+                    <td>{{ submission.submitted_at }}</td>
+                    <td><a href="{% url 'review_submission' submission.id %}">Review</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'schedule_activity' %}">Click here to schedule a new activity</a>
+
+</body>
+</html>
+

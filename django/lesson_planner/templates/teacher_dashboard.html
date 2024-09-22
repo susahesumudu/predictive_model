@@ -1,0 +1,11 @@
+<h1>Teacher Dashboard</h1>
+
+<h2>Tasks</h2>
+<ul>
+    {% for task in tasks %}
+    <li>{{ task.name }}:
+        <a href="{% url 'plan_activities' task.id %}">Plan Activities</a>
+    </li>
+    {% endfor %}
+</ul>
+

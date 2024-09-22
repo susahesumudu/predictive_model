@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+<h1>Welcome, {{ student.name }}!</h1>
+
+<h2>Prediction: {{ prediction }}</h2>
+
+<h3>Feedback:</h3>
+<ul>
+    {% for item in feedback %}
+        <li>{{ item.feedback }}</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'submit-task' task_id %}">Submit Your Task</a>
+{% endblock %}
+

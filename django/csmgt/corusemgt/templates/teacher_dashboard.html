@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Teacher Dashboard</title>
+</head>
+<body>
+    <h1>Welcome, {{ user.username }} (Teacher)</h1>
+
+    <h2>Training Plan: {{ training_plan }}</h2>
+
+    <h3>Tasks:</h3>
+    <ul>
+    {% for task in tasks %}
+        <li>
+            <strong>{{ task.title }}</strong> ({{ task.description }})
+            <button onclick="document.getElementById('activity-form-{{ task.id }}').style.display = 'block'">Create Activity</button>
+
+            <!-- Activity Form -->
+            <div id="activity-form-{{ task.id }}" style="display:none;">
+<form method="post" action="{% url 'create_activity' task.id %}">
+    {% csrf_token %}
+    <label for="title">Activity Title:</label>
+    <input type="text" name="title" required><br>
+    
+    <label for="description">Description:</label>
+    <textarea name="description"></textarea><br>
+
+    <label for="deadline">Deadline:</label>
+    <input type="date" name="deadline" required><br>
+
+    <label for="duration_hours">Duration (hours):</label>
+    <input type="number" name="duration_hours" step="0.5" min="0" required><br>
+
+    <button type="submit">Create Activity</button>
+</form>
+
+            </div>
+
+            <!-- List of Existing Activities -->
+            <h4>Activities:</h4>
+            <ul>
+            {% for activity in task.activities.all %}
+                <li>{{ activity.title }} - {{ activity.deadline }} ({{ activity.duration_hours }} hours)</li>
+            {% empty %}
+                <li>No activities created yet.</li>
+            {% endfor %}
+            </ul>
+        </li>
+    {% endfor %}
+    </ul>
+</body>
+</html>
+
+

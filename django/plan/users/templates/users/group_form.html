@@ -1,0 +1,21 @@
+
+{% extends 'base.html' %}
+
+{% block title %}{% if group %}Edit Group{% else %}Create Group{% endif %}{% endblock %}
+
+{% block content %}
+<h2>{% if group %}Edit Group{% else %}Create Group{% endif %}</h2>
+<form method="POST">
+    {% csrf_token %}
+    
+    <div>
+        <label for="id_name">Group Name:</label>
+        {{ form.name }}
+    </div>
+
+    <div>
+        <button type="submit" class="btn">Save</button>
+    </div>
+</form>
+{% endblock %}
+

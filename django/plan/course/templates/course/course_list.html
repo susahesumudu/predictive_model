@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Courses{% endblock %}
+
+{% block content %}
+<h2>Course List</h2>
+
+<!-- Course Table -->
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Course Title</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for course in courses %}
+        <tr>
+            <td>{{ forloop.counter }}</td> <!-- Row number -->
+            <td>{{ course.title }}</td> <!-- Course Title -->
+            <td>
+                 <a href="{% url 'course_detail' course.pk %}" class="btn view-btn">Details</a>
+                {% if not is_teacher %}  <!-- Hide Edit/Delete for Teachers -->
+                <a href="{% url 'course_edit' course.pk %}" class="btn edit-btn">Edit</a>
+                <a href="{% url 'course_delete' course.pk %}" class="btn delete-btn">Delete</a>
+                <a href="{% url 'course_create' %}" class="btn add-btn">Add New Course</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Button to add a new course -->
+
+
+{% endblock %}
+

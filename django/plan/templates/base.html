@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Management Dashboard{% endblock %}</title>
+    <style>
+        /* Importing a modern Google font */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #F5F5F5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #34495E; /* Dark Gray */
+        }
+
+        header {
+            background-color: #2C3E50; /* Dark Navy */
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #2C3E50; /* Dark Navy */
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar .logo a {
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: #1ABC9C; /* Turquoise on hover */
+            border-radius: 4px;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            padding: 20px;
+            background-color: #34495E; /* Slightly darker gray */
+            border-right: 29px solid #ddd;
+            color: white;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar h3 {
+            color: #ECF0F1; /* Light Gray */
+            font-size: 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 12px;
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+            margin-bottom: 10px;
+            background-color: #2C3E50;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar a:hover {
+            background-color: #1ABC9C; /* Soft Turquoise hover effect */
+        }
+
+        /* Content */
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .content h2 {
+            font-size: 28px;
+            color: #34495E;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #2C3E50;
+            color: white;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        /* Responsive Layout */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .content {
+                width: 100%;
+            }
+        }
+
+        /* Form Styling */
+        .form-container {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #F5F5F5;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .form-group label {
+            text-align: right;
+            font-weight: bold;
+            padding-right: 10px;
+            align-self: center;
+        }
+
+        .form-group input, .form-group textarea {
+            padding: 10px;
+            font-size: 14px;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-group button.btn {
+            grid-column: 2 / span 1;
+            padding: 10px 15px;
+            background-color: #1ABC9C;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-group button.btn:hover {
+            background-color: #16A085; /* Darker turquoise on hover */
+        }
+
+
+
+/* Table styling */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.styled-table thead tr {
+    background-color: #2C3E50; /* Dark Navy */
+    color: white;
+    text-align: left;
+    font-weight: bold;
+}
+
+.styled-table th, .styled-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #2C3E50;
+}
+
+.styled-table tbody tr:hover {
+    background-color: #f1f1f1;
+    transition: background-color 0.2s ease;
+}
+
+/* Button styling */
+.btn {
+  padding: 5px 8px;
+    font-size: 12px;
+    font-weight: normal;
+    border-radius: 3px;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+}
+
+.view-btn {
+    background-color: #1ABC9C; /* Turquoise */
+    margin-right: 8px;
+}
+
+.edit-btn {
+    background-color: #FF6347; /* Tomato */
+}
+
+.add-btn {
+    background-color: #3498DB; /* Light Blue for Add New Course */
+    margin-top: 20px;
+    display: inline-block;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+/* Responsive Table */
+@media (max-width: 768px) {
+    .styled-table th, .styled-table td {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+
+
+
+/* Course Detail Container */
+.course-detail-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.course-detail-container h2 {
+    font-size: 28px;
+    color: #34495E;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+}
+
+/* Course Information Section */
+.course-info p {
+    font-size: 16px;
+    color: #2C3E50;
+    margin: 15px 0;
+}
+
+/* Action Buttons Section */
+.course-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.course-actions .btn {
+    padding: 10px 20px;
+    border: none;
+    font-size: 10px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+}
+
+.edit-btn {
+    background-color: #1ABC9C; /* Turquoise */
+}
+
+.delete-btn {
+    background-color: #E74C3C; /* Red */
+}
+
+.back-btn {
+    background-color: #3498DB; /* Light Blue */
+}
+
+/* Button Hover Effects */
+.course-actions .btn:hover {
+    opacity: 0.9;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .course-detail-container {
+        padding: 15px;
+    }
+
+    .course-actions {
+        flex-direction: column;
+    }
+
+    .course-actions .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+
+
+/* Delete Course Container */
+.delete-course-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.delete-course-container h2 {
+    font-size: 28px;
+    color: #E74C3C; /* Red color to emphasize deletion */
+    margin-bottom: 20px;
+}
+
+.delete-course-container p {
+    font-size: 16px;
+    color: #34495E;
+    margin-bottom: 30px;
+}
+
+/* Delete Form */
+.delete-form {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* Button Styling */
+.btn {
+    padding: 10px 20px;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+}
+
+.delete-btn {
+    background-color: #E74C3C; /* Red for delete button */
+}
+
+.cancel-btn {
+    background-color: #3498DB; /* Light blue for cancel button */
+}
+
+/* Hover Effects */
+.delete-btn:hover {
+    background-color: #C0392B; /* Darker red */
+}
+
+.cancel-btn:hover {
+    background-color: #2980B9; /* Darker blue */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .delete-form {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+
+/* Form Container */
+.course-form-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.course-form-container h2 {
+    font-size: 28px;
+    color: #34495E;
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+}
+
+/* Form Styling */
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #34495E;
+}
+
+.form-group input, .form-group textarea {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Button Styling */
+.btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.save-btn {
+    background-color: #1ABC9C; /* Turquoise */
+}
+
+.back-btn {
+    background-color: #3498DB; /* Light Blue */
+    margin-top: 20px;
+    display: inline-block;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+/* Responsive Form */
+@media (max-width: 768px) {
+    .course-form-container {
+        padding: 15px;
+    }
+
+    .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Navigation bar -->
+      <nav class="navbar">
+    <div class="logo">
+        <a href="{% url 'home' %}">HOME</a>
+    </div>
+    <!-- Navbar Links -->
+    <div class="navbar-links">
+    
+            {% if user.is_authenticated %}
+                
+                    <form id="logout-form" method="POST" action="{% url 'logout' %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-link nav-link" style="color: white; background-color:black">Logout</button>
+                    </form>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+
+    </header>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+         
+            {% include 'includes/sidebar.html' %}
+    
+        </div>
+
+        <!-- Content Area -->
+        <div class="content">
+            {% block content %}
+            <h2>Content will load here</h2>
+            <p>Select an option from the sidebar to manage Courses, Modules, Tasks, and Activities.</p>
+            {% endblock %}
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2024 Management Dashboard
+    </footer>
+</body>
+</html>
+

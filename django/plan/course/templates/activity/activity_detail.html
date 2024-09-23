@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}Activity Detail{% endblock %}
+
+{% block content %}
+<div class="activity-detail-container">
+    <h2>{{ activity.title }}</h2>
+
+    <!-- Activity Info Section -->
+    <div class="activity-info">
+        <p><strong>Description:</strong> {{ activity.description }}</p>
+        <p><strong>Task:</strong> {{ activity.task.title }}</p>
+        <p><strong>Activity Type:</strong> {{ activity.activity_type }}</p>
+        <p><strong>Session Type:</strong> {{ activity.session_type }}</p>
+       
+        <p><strong>Submission Deadline:</strong> {{ activity.submission_deadline }}</p>
+        <p><strong>Grading Rubric:</strong> 
+            {% if activity.publish_grading_rubric %}
+           
+    {% if activity.rubrics.exists %}
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Criteria</th>
+                <th>Description</th>
+                <th>Maximum Points</th>
+                <th>Points Awarded</th>
+                <th>Actions</th> <!-- Optional: to allow editing -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for rubric in activity.rubrics.all %}
+            <tr>
+                <td>{{ rubric.criteria }}</td>
+                <td>{{ rubric.description }}</td>
+                <td>{{ rubric.max_points }}</td>
+                <td>{% if rubric.points_awarded %}{{ rubric.points_awarded }}{% else %}Not Graded{% endif %}</td>
+                <td>
+                    <a href="{% url 'rubric_edit' rubric.pk %}" class="btn edit-btn">Edit</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No grading rubric available for this activity.</p>
+    {% endif %}
+
+
+
+            {% else %}
+                Not Published
+            {% endif %}
+        </p>
+    </div>
+
+
+    <!-- Submission and grading section (for students/teachers) -->
+    {% if is_student %}
+    <h3>Submit Work</h3>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Submit</button>
+    </form>
+    {% else %}
+    <h3>Submissions</h3>
+    <ul>
+        {% for submission in activity.submissions.all %}
+        <li>
+            {{ submission.student.username }} - 
+            {% if submission.is_late %} Late {% else %} On Time {% endif %} - 
+            Marks: {{ submission.marks|default:"Not Graded" }}
+            <a href="{% url 'grade_submission' submission.pk %}">Grade</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <!-- Action Buttons -->
+    <div class="activity-actions">
+        <a href="{% url 'activity_edit' activity.pk %}" class="btn edit-btn">Edit</a>
+        <a href="{% url 'activity_delete' activity.pk %}" class="btn delete-btn">Delete</a>
+        <a href="{% url 'activity_list' %}" class="btn back-btn">Back to Activity List</a>
+    </div>
+</div>
+{% endblock %}
+
+
+

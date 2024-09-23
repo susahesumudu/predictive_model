@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Tasks{% endblock %}
+
+{% block content %}
+<h2>Task List</h2>
+
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Task Title</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ task.title }}</td>
+
+
+            <td>
+
+              <a href="{% url 'task_detail' task.pk %}" class="btn view-btn">Details</a>
+                {% if not is_teacher %}  <!-- Hide Edit/Delete for Teachers -->
+                <a href="{% url 'task_detail' task.pk %}" class="btn view-btn">Details</a>
+                <a href="{% url 'task_edit' task.pk %}" class="btn edit-btn">Edit</a>
+                <a href="{% url 'task_create' %}" class="btn add-btn">Add New Task</a>
+                {% endif %}
+             
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}
+

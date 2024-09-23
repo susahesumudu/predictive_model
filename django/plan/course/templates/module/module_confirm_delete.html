@@ -1,0 +1,19 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Delete Module{% endblock %}
+
+{% block content %}
+<div class="delete-course-container">
+    <h2>Delete Module</h2>
+    <p>Are you sure you want to delete "<strong>{{ module.title }}</strong>"?</p>
+
+    <!-- Delete confirmation form -->
+    <form method="post" class="delete-form">
+        {% csrf_token %}
+        <button type="submit" class="btn delete-btn">Delete</button>
+        <a href="{% url 'module_detail' module.pk %}" class="btn cancel-btn">Cancel</a>
+    </form>
+</div>
+{% endblock %}
+

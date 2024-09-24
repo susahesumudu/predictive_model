@@ -9,6 +9,7 @@ from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404
 
+from django.shortcuts import redirect
 
 from django.utils import timezone
 
@@ -166,13 +167,7 @@ class ActivityListView(LoginRequiredMixin, ListView):
     model = Activity
     template_name = 'activity/activity_list.html'
     context_object_name = 'activities'
-
-    # Ensure students can only view
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Check if the user is in the Student group
-        context['is_student'] = self.request.user.groups.filter(name='Student').exists()
-        return context
+    
 
 # Create a new activity
 class ActivityCreateView(CreateView):
@@ -210,33 +205,58 @@ class ActivityDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 class ActivityDetailView(LoginRequiredMixin, DetailView):
     model = Activity
     template_name = 'activity/activity_detail.html'
+    context_object_name = 'activity'
+    
 
-
-
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['activity'] = self.object  # Ensures the activity object is passed
+        context['is_student'] = self.request.user.groups.filter(name='Student').exists()
+        activity = self.get_object()
+        # Fetch all submissions for this activity
+        submissions = activity.submissions.all()  # Assuming `submissions` is a related name in the `Activity` model
+        context['submissions'] = activity.submissions.all() 
+        context['is_teacher'] = self.request.user.groups.filter(name='Teacher').exists()
+        context['is_student'] = self.request.user.groups.filter(name='Student').exists()
+        user = self.request.user
+        context['has_submitted'] = self.object.submissions.filter(student=user).exists()
+        return context   
+       
 
 # Handle student submission
-class SubmissionCreateView(FormView):
+class SubmissionCreateView(CreateView):  # Change FormView to CreateView
     model = Submission
     form_class = SubmissionForm
-    template_name = 'submit_activity.html'
+    template_name = 'activity/submit_activity.html'
     
     def form_valid(self, form):
+        if not self.request.user.groups.filter(name='Student').exists():
+            return self.handle_no_permission()  # Restrict access if the user is not a student
+
         activity = get_object_or_404(Activity, pk=self.kwargs['pk'])
-        submission = form.save(commit=False)
+        submission = form.save(commit=False)  # Save form without committing yet
         submission.activity = activity
         submission.student = self.request.user  # Assuming the student is logged in
-        submission.save()
-        return super().form_valid(form)
-    
+        submission.submitted_at = timezone.now()
+        submission.end_time = timezone.now()  # Set end_time if it's required
+        submission.save()  # Save the submission to the database
+        return redirect('activity_detail', pk=activity.pk)  # Redirect to activity detail page
+
     def get_success_url(self):
-        return reverse_lazy('activity_list')
+        return reverse_lazy('activity_list')  # URL to redirect after success
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['activity'] = get_object_or_404(Activity, pk=self.kwargs['pk'])  # Add activity to context
+        return context
+
+
 
 # Grade a submission (teacher's task)
 class SubmissionGradeView(UpdateView):
     model = Submission
     form_class = MarksForm
-    template_name = 'grade_submission.html'
+    template_name = 'activity/grade_submission.html'
     
     def get_success_url(self):
         return reverse_lazy('activity_list')
@@ -263,7 +283,7 @@ class RubricCreateView(CreateView):
 class RubricUpdateView(UpdateView):
     model = GradingRubric
     form_class = GradingRubricForm
-    template_name = 'rubric_form.html'
+    template_name = 'activity/rubric_form.html'
 
     def get_success_url(self):
         return reverse_lazy('activity_detail', kwargs={'pk': self.object.activity.pk})

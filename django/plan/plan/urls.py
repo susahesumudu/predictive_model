@@ -4,6 +4,9 @@ from django.urls import path, include
 from django.views.generic import TemplateView
 from django.contrib.auth import views as auth_views
 from users.views import staff_dashboard, teacher_dashboard, student_dashboard, lab_dashboard, demo_dashboard
+from django.conf.urls.static import static  # Add this line
+from django.conf import settings
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,4 +29,7 @@ urlpatterns = [
     # Uncomment this if you want the home page to redirect to login
     path('', TemplateView.as_view(template_name='registration/login.html'), name='home'),
 ]
+
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

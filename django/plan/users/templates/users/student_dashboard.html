@@ -1,9 +1,86 @@
 {% extends 'base.html' %}
 
-{% block title %}Student Dashboard{% endblock %}
-
 {% block content %}
-<h2>Welcome to the Student Dashboard</h2>
-<p>Here is the content for Students.</p>
+<h2>Your Dashboard</h2>
+
+<p>Total Activities: {{ total_submissions }}</p>
+<p>Total Graded: {{ total_graded }}</p>
+
+<!-- Notifications and Suggestions -->
+<h3>Notifications and Suggestions for Improvement</h3>
+<ul>
+    {% for suggestion in suggestions %}
+    <li>{{ suggestion }}</li>
+    {% endfor %}
+</ul>
+
+<h2>Attendance Dashboard</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in attendance_records %}
+        <tr>
+            <td>{{ record.student.username }}</td>
+            <td>{{ record.check_in_time|date:"Y-m-d" }}</td>
+            <td>{{ record.check_in_time|date:"H:i:s" }}</td>
+            <td>
+                {% if record.is_present %}
+                    Present
+                {% else %}
+                    Absent
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+<h3>Your Submissions</h3>
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>Activity</th>
+            <th>Submitted On</th>
+            <th>Grade</th>
+            <th>Feedback</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for submission in submissions %}
+        <tr>
+            <td>{{ submission.activity.title }}</td>
+            <td>{{ submission.submitted_at }}</td>
+            <td>{% if submission.marks %}{{ submission.marks }}{% else %}Not Graded{% endif %}</td>
+            <td>{{ submission.feedback }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Graphs Container -->
+<h3>Your Grades and Submission Status</h3>
+<div style="display: flex; justify-content: space-between; gap: 20px;">
+    <!-- Pie chart for grades breakdown by range -->
+    <div style="flex: 1; text-align: center;">
+        <h4>Grade Breakdown by Range</h4>
+        <img src="data:image/png;base64,{{ pie_grades_breakdown_chart }}" alt="Grade Breakdown by Range Pie Chart" style="max-width: 100%; height: auto;" />
+    </div>
+
+    <!-- Pie chart for graded vs ungraded submissions -->
+    <div style="flex: 1; text-align: center;">
+        <h4>Graded vs Ungraded Submissions</h4>
+        <img src="data:image/png;base64,{{ pie_chart }}" alt="Graded vs Ungraded Pie Chart" style="max-width: 100%; height: auto;" />
+    </div>
+</div>
+
 {% endblock %}
 

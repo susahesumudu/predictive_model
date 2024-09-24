@@ -5,7 +5,7 @@
         <!-- Site Name -->
        
         <!-- Logged-in User's Name -->
-        <p class="mb-4">Logged in as: {{ user.username }}</p>
+        <p class="mb-4">Logged in as: {{ user.firstname }}</p>
    
 
         <ul class="nav flex-column">
@@ -57,7 +57,8 @@
                         <a class="nav-link text-white" href="/admin/">Admin </a>
                     </li>
                 {% elif group.name == 'Staff' %}
-                    <!-- Features for Staff -->
+                 
+             <!-- Features for Staff -->
                     <li class="nav-item">
                         <a class="nav-link text-white" href="#">Manage Students</a>
                     </li>
@@ -68,53 +69,58 @@
                         <a class="nav-link text-white" href="#">Grade Submissions</a>
                     </li>
 
-                  {% elif group.name == 'Teacher' %}
+                  
+            {% elif group.name == 'Teacher' %}
                     <!-- Teacher-specific links -->
                      <h2>Manage</h2>
 
             <!-- Course Section -->
             <h3>Courses</h3>
-            <ul>
-                <li><a href="{% url 'course_list' %}">View All Courses</a></li>
-         
-            </ul>
+                  <ul>
+                      <li><a href="{% url 'course_list' %}">View All Courses</a></li>
+               
+                  </ul>
 
             <!-- Module Section -->
             <h3>Modules</h3>
-            <ul>
-                <li><a href="{% url 'module_list' %}">View All Modules</a></li>
-               
-            </ul>
+                  <ul>
+                      <li><a href="{% url 'module_list' %}">View All Modules</a></li>
+                     
+                  </ul>
 
             <!-- Task Section -->
             <h3>Tasks</h3>
-            <ul>
-                <li><a href="{% url 'task_list' %}">View All Tasks</a></li>
-             
-            </ul>
+                    <ul>
+                        <li><a href="{% url 'task_list' %}">View All Tasks</a></li>
+                     
+                    </ul>
 
             <!-- Activity Section -->
             <h3>Activities</h3>
-            <ul>
-                <li><a href="{% url 'activity_list' %}">View All Activities</a></li>
-                <li><a href="{% url 'activity_create' %}">Add New Activity</a></li>
-            </ul>
+                    <ul>
+                        <li><a href="{% url 'activity_list' %}">View All Activities</a></li>
+                        <li><a href="{% url 'activity_create' %}">Add New Activity</a></li>
+                    </ul>
+                    <ul>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="#">Gradeing Students</a>
                     </li>
-                    </li>
+                    </ul>
+                   
+
+
                   {% elif group.name == 'Student' %}
                     <!-- Features for Students -->
                     <li class="nav-item">
-                        <li><a href="{% url 'activity_list' %}">View All Activities</a></li>
+                        <a href="{% url 'student_dashboard' %}">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Submit Work</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="#">View Grades</a>
-                    </li>
+                        <a href="{% url 'activity_list' %}">View All Activities</a>
+                    </li>                  
+                 
                 {% endif %}
+
+
             {% endfor %}
         </ul>
     </div>

@@ -59,8 +59,9 @@ class Submission(models.Model):
     submitted_at = models.DateTimeField(auto_now_add=True)  # Automatically set to now when submitted
     marks = models.FloatField(null=True, blank=True)  # Marks can be assigned later
     feedback = models.TextField(null=True, blank=True)  # Optional feedback for the submission
-    start_time = models.DateTimeField()  # Activity start time
-    end_time = models.DateTimeField()  # Activity end time
+    submitted_at = models.DateTimeField(auto_now_add=True)
+    end_time = models.DateTimeField(null=True, blank=True) 
+
 
     def duration(self):
         return (self.end_time - self.start_time).total_seconds() / 3600  # Duration in hours

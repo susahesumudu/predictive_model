@@ -27,10 +27,11 @@
             <td>{{ activity.submission_deadline }}</td>
             <td>
                 <a href="{% url 'activity_detail' activity.pk %}" class="btn view-btn">Details</a>
-                {% if not is_student %}
+                {% if  is_student %}
                 <a href="{% url 'activity_edit' activity.pk %}" class="btn edit-btn">Edit</a>
                 <a href="{% url 'activity_delete' activity.pk %}" class="btn delete-btn">Delete</a>
                 {% endif %}
+
             </td>
         </tr>
         {% empty %}
@@ -42,7 +43,7 @@
 </table>
 
 <!-- Button to add a new activity (Hidden for students) -->
-{% if not is_student %}
+{% if  is_student %}
 <a href="{% url 'activity_create' %}" class="btn add-btn">Add New Activity</a>
 {% endif %}
 

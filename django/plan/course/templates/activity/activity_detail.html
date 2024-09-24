@@ -8,83 +8,162 @@
 
     <!-- Activity Info Section -->
     <div class="activity-info">
-        <p><strong>Description:</strong> {{ activity.description }}</p>
+        <p><strong>Course:</strong> {{ activity.task.module.course.title }}</p>
+        <p><strong>Module:</strong> {{ activity.task.module.title }}</p>
         <p><strong>Task:</strong> {{ activity.task.title }}</p>
+        <p><strong>Description:</strong> {{ activity.description }}</p>
         <p><strong>Activity Type:</strong> {{ activity.activity_type }}</p>
         <p><strong>Session Type:</strong> {{ activity.session_type }}</p>
-       
         <p><strong>Submission Deadline:</strong> {{ activity.submission_deadline }}</p>
-        <p><strong>Grading Rubric:</strong> 
+        <p><strong>Grading Rubric:</strong>
             {% if activity.publish_grading_rubric %}
-           
-    {% if activity.rubrics.exists %}
-    <table class="styled-table">
-        <thead>
-            <tr>
-                <th>Criteria</th>
-                <th>Description</th>
-                <th>Maximum Points</th>
-                <th>Points Awarded</th>
-                <th>Actions</th> <!-- Optional: to allow editing -->
-            </tr>
-        </thead>
-        <tbody>
-            {% for rubric in activity.rubrics.all %}
-            <tr>
-                <td>{{ rubric.criteria }}</td>
-                <td>{{ rubric.description }}</td>
-                <td>{{ rubric.max_points }}</td>
-                <td>{% if rubric.points_awarded %}{{ rubric.points_awarded }}{% else %}Not Graded{% endif %}</td>
-                <td>
-                    <a href="{% url 'rubric_edit' rubric.pk %}" class="btn edit-btn">Edit</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% else %}
-    <p>No grading rubric available for this activity.</p>
-    {% endif %}
-
-
-
+                {% if activity.rubrics.exists %}
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Criteria</th>
+                            <th>Description</th>
+                            <th>Maximum Points</th>
+                            <th>Points Awarded</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rubric in activity.rubrics.all %}
+                        <tr>
+                            <td>{{ rubric.criteria }}</td>
+                            <td>{{ rubric.description }}</td>
+                            <td>{{ rubric.max_points }}</td>
+                            <td>{% if rubric.points_awarded %}{{ rubric.points_awarded }}{% else %}Not Graded{% endif %}</td>
+                            <td>
+                                {% if not is_student %}
+                                <a href="{% url 'rubric_edit' rubric.pk %}" class="btn edit-btn">Edit</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>No grading rubric available for this activity.</p>
+                {% endif %}
             {% else %}
                 Not Published
+                {% if is_teacher %}
+                <a href="{% url 'rubric_create' activity.pk %}" class="btn add-btn">Add Rubric</a>
+                {% endif %}
             {% endif %}
+
+
+
+
+
         </p>
     </div>
 
-
-    <!-- Submission and grading section (for students/teachers) -->
+    <!-- Submission Section -->
     {% if is_student %}
-    <h3>Submit Work</h3>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn">Submit</button>
-    </form>
-    {% else %}
-    <h3>Submissions</h3>
-    <ul>
-        {% for submission in activity.submissions.all %}
-        <li>
-            {{ submission.student.username }} - 
-            {% if submission.is_late %} Late {% else %} On Time {% endif %} - 
-            Marks: {{ submission.marks|default:"Not Graded" }}
-            <a href="{% url 'grade_submission' submission.pk %}">Grade</a>
-        </li>
-        {% endfor %}
-    </ul>
+        <h3>Submit Your Work</h3>
+        <a href="{% url 'submit_activity' activity.pk %}" >Submit Your Work</a>
     {% endif %}
 
-    <!-- Action Buttons -->
-    <div class="activity-actions">
-        <a href="{% url 'activity_edit' activity.pk %}" class="btn edit-btn">Edit</a>
-        <a href="{% url 'activity_delete' activity.pk %}" class="btn delete-btn">Delete</a>
-        <a href="{% url 'activity_list' %}" class="btn back-btn">Back to Activity List</a>
-    </div>
+    <!-- Submissions and grading section (for teachers) -->
+    {% if is_teacher %}
+        <h3>Student Submissions</h3>
+        
+        {% if activity.submissions.exists %}
+        
+        <!-- Graded Submissions -->
+        <h4>Graded Submissions</h4>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Submission Date</th>
+                    <th>Status</th>
+                    <th>Marks</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for submission in activity.submissions.all %}
+                {% if submission.marks %}
+                <tr>
+                    <td>{{ submission.student.username }}</td>
+                    <td>{{ submission.submitted_at }}</td>
+                    <td>{% if submission.is_late %}Late{% else %}On Time{% endif %}</td>
+                    <td>{{ submission.marks }}</td>
+                    <td>
+                        <a href="{% url 'grade_submission' submission.pk %}">Update Grade</a>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Not Graded Submissions -->
+        <h4>Not Graded Submissions</h4>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Submission Date</th>
+                    <th>Status</th>
+                    <th>Marks</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for submission in activity.submissions.all %}
+                {% if not submission.marks %}
+                <tr>
+                    <td>{{ submission.student.username }}</td>
+                    <td>{{ submission.submitted_at }}</td>
+                    <td>{% if submission.is_late %}Late{% else %}On Time{% endif %}</td>
+                    <td>Not Graded</td>
+                    <td>
+                        <a href="{% url 'grade_submission' submission.pk %}">Grade</a>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Late Submissions -->
+        <h4>Late Submissions</h4>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Submission Date</th>
+                    <th>Status</th>
+                    <th>Marks</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for submission in activity.submissions.all %}
+                {% if submission.is_late %}
+                <tr>
+                    <td>{{ submission.student.username }}</td>
+                    <td>{{ submission.submitted_at }}</td>
+                    <td>Late</td>
+                    <td>{% if submission.marks %}{{ submission.marks }}{% else %}Not Graded{% endif %}</td>
+                    <td>
+                        <a href="{% url 'grade_submission' submission.pk %}">Grade</a>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% else %}
+        <p>No submissions available for this activity.</p>
+        {% endif %}
+    {% endif %}
 </div>
 {% endblock %}
-
-
 

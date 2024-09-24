@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "course.apps.CourseConfig",
     "users.apps.UsersConfig",
+"attendance.apps.AttendanceConfig",
 ]
 
 MIDDLEWARE = [
@@ -123,9 +124,13 @@ USE_TZ = True
 LOGIN_REDIRECT_URL = '/teacher_dashboard/'  # Default redirect after login (can be customized)
 
 # Redirect users after logout
-LOGOUT_REDIRECT_URL = '/login/'  # Redirect to login after logout
+LOGOUT_REDIRECT_URL = 'users/login/'  # Redirect to login after logout
 
 STATIC_URL = 'static/'
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Activities{% endblock %}
+
+{% block content %}
+<h2>Activity List</h2>
+
+<!-- Activity Table -->
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Activity Title</th>
+            <th>Activity Type</th>
+            <th>Session Type</th>
+            <th>Deadline</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for activity in activities %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ activity.title }}</td>
+            <td>{{ activity.activity_type }}</td>
+            <td>{{ activity.session_type }}</td>
+            <td>{{ activity.submission_deadline }}</td>
+            <td>
+                <a href="{% url 'activity_detail' activity.pk %}" class="btn view-btn">Details</a>
+                {% if  is_student %}
+                <a href="{% url 'activity_edit' activity.pk %}" class="btn edit-btn">Edit</a>
+                <a href="{% url 'activity_delete' activity.pk %}" class="btn delete-btn">Delete</a>
+                {% endif %}
+
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No activities available.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Button to add a new activity (Hidden for students) -->
+{% if  is_student %}
+<a href="{% url 'activity_create' %}" class="btn add-btn">Add New Activity</a>
+{% endif %}
+
+{% endblock %}
+

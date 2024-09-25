@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Modules{% endblock %}
+
+{% block content %}
+<h2>Module List</h2>
+
+<!-- Module Table -->
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Module Title</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for module in modules %}
+        <tr>
+            <td>{{ forloop.counter }}</td> <!-- Row number -->
+            <td>{{ module.title }}</td> <!-- Module Title -->
+            <td>
+              <a href="{% url 'module_detail' module.pk %}" class="btn view-btn">Details</a>
+                 {% if not is_teacher %}  <!-- Hide Edit/Delete for Teachers -->
+                <a href="{% url 'module_detail' module.pk %}" class="btn view-btn">Details</a>
+                <a href="{% url 'module_edit' module.pk %}" class="btn edit-btn">Edit</a>
+                <a href="{% url 'module_create' %}" class="btn add-btn">Add New Module</a>
+                 {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Button to add a new module -->
+
+
+{% endblock %}
+

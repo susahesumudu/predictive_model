@@ -1,0 +1,9 @@
+<h2>Student List</h2>
+<ul>
+    {% for student in students %}
+        <li>
+            <a href="{% url 'rubric_assessment:student_detail' student.id %}">{{ student.name }}</a>
+        </li>
+    {% endfor %}
+</ul>
+

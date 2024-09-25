@@ -211,7 +211,6 @@ class ActivityDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['activity'] = self.object  # Ensures the activity object is passed
-        context['is_student'] = self.request.user.groups.filter(name='Student').exists()
         activity = self.get_object()
         # Fetch all submissions for this activity
         submissions = activity.submissions.all()  # Assuming `submissions` is a related name in the `Activity` model

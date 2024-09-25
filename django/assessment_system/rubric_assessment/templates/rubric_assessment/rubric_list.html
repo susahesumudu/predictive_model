@@ -1,0 +1,7 @@
+<h2>Available Rubrics</h2>
+<ul>
+    {% for rubric in rubrics %}
+    <li><a href="{% url 'rubric_assessment:assess_student' rubric.id %}">{{ rubric.name }}</a></li>
+    {% endfor %}
+</ul>
+

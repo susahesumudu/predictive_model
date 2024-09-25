@@ -1,6 +1,6 @@
 # admin.py
 from django.contrib import admin
-from .models import Course, Module, Task, Activity
+from .models import Course, Module, Task, Activity,GradingRubric
 
 
 
@@ -14,4 +14,4 @@ class CourseAdmin(admin.ModelAdmin):
 admin.site.register(Module)
 admin.site.register(Task)
 admin.site.register(Activity)
-
+admin.site.register(GradingRubric)

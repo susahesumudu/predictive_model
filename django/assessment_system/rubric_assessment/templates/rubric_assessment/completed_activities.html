@@ -1,0 +1,10 @@
+<h2>Completed Activities</h2>
+<ul>
+    {% for activity in activities %}
+    <li>
+        {{ activity.name }} by {{ activity.student.name }} (Completed on {{ activity.date_completed }})
+        <a href="{% url 'rubric_assessment:grade_activity' activity.id %}">Grade Activity</a>
+    </li>
+    {% endfor %}
+</ul>
+

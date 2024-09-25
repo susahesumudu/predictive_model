@@ -1,0 +1,120 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Management Dashboard{% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 24px;
+        }
+        .container {
+            display: flex;
+            flex: 1;
+        }
+        .sidebar {
+            width: 25%;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border-right: 1px solid #ddd;
+        }
+        .sidebar h2 {
+            margin-top: 0;
+        }
+        .content {
+            width: 75%;
+            padding: 20px;
+            background-color: white;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        .content h2 {
+            font-size: 28px;
+            color: #333;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        a {
+            display: block;
+            padding: 8px 0;
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            border-bottom: 1px solid #ddd;
+        }
+        a:hover {
+            color: #4CAF50;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #4CAF50;
+            color: white;
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+        }
+        .sidebar h3 {
+            margin-top: 20px;
+            color: #333;
+            font-size: 18px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 8px;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #ddd;
+            }
+            .content {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        Management Dashboard
+    </header>
+
+    <div class="container">
+        <div class="sidebar">
+            <h2>Manage</h2>
+            <h3>Users</h3>
+            <a href="{% url 'user_list' %}">View Users</a>
+            <a href="{% url 'user_create' %}">Create User</a>
+            
+            <h3>Groups</h3>
+            <a href="{% url 'group_list' %}">View Groups</a>
+            <a href="{% url 'group_create' %}">Create Group</a>
+        </div>
+
+        <div class="content">
+            {% block content %}
+            <h2>Content will load here</h2>
+            {% endblock %}
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2024 Management Dashboard
+    </footer>
+</body>
+</html>
+    

@@ -1,0 +1,52 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Create/Edit Activity{% endblock %}
+
+{% block content %}
+<h2>{% if activity.pk %}Edit Activity{% else %}Create Activity{% endif %}</h2>
+
+<form method="post" class="form-container">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="id_title">Title:</label>
+        {{ form.title }}
+    </div>
+    <div class="form-group">
+        <label for="id_description">Description:</label>
+        {{ form.description }}
+    </div>
+    <div class="form-group">
+        <label for="id_task">Task:</label>
+        {{ form.task }} <!-- Dropdown for task -->
+    </div>
+    <div class="form-group">
+        <label for="id_activity_type">Activity Type:</label>
+        {{ form.activity_type }} <!-- Dropdown for activity type -->
+    </div>
+    <div class="form-group">
+        <label for="id_grading_rubric">Grading Rubric:</label>
+        {{ form.grading_rubric }}
+    </div>
+    <div class="form-group">
+        <label for="id_publish_grading_rubric">Publish Grading Rubric:</label>
+        {{ form.publish_grading_rubric }}
+    </div>
+    <div class="form-group">
+        <label for="id_submission_deadline">Submission Deadline:</label>
+        {{ form.submission_deadline }}
+    </div>
+    <div class="form-group">
+        <label for="id_session_type">Session Type:</label>
+        {{ form.session_type }} <!-- Dropdown for session type -->
+    </div>
+
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn">Save</button>
+    </div>
+</form>
+
+
+{% endblock %}
+

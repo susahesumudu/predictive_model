@@ -1,0 +1,30 @@
+ {% if activity.rubrics.exists %}
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Criteria</th>
+                            <th>Description</th>
+                            <th>Maximum Points</th>
+                            <th>Points Awarded</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rubric in activity.rubrics.all %}
+                        <tr>
+                            <td>{{ rubric.criteria }}</td>
+                            <td>{{ rubric.description }}</td>
+                            <td>{{ rubric.max_points }}</td>
+                            <td>{% if rubric.points_awarded %}{{ rubric.points_awarded }}{% else %}Not Graded{% endif %}</td>
+                            <td>
+                                {% if  is_teacher %}
+                                <a href="{% url 'rubric_edit' rubric.pk %}" class="btn edit-btn">Edit</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>No grading rubric available for this activity.</p>
+                {% endif %}

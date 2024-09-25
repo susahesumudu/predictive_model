@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Module Detail{% endblock %}
+
+{% block content %}
+<div class="course-detail-container">
+    <h2>{{ module.title }}</h2>
+    
+    <div class="module-info">
+        <p><strong>Description:</strong> {{ module.description }}</p>
+    </div>
+
+    <div class="module-actions">
+ {% if not is_teacher %}  <!-- Hide Edit/Delete for Teachers -->
+                   <a href="{% url 'module_edit' module.pk %}" class="btn edit-btn">Edit</a>
+        <a href="{% url 'module_delete' module.pk %}" class="btn delete-btn">Delete</a>
+                {% endif %}
+    
+        <a href="{% url 'module_list' %}" class="btn back-btn">Back to Module List</a>
+    </div>
+</div>
+{% endblock %}
+

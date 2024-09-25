@@ -1,0 +1,15 @@
+<h2>Grade Activity: {{ activity.name }}</h2>
+<p>Student: {{ activity.student.name }}</p>
+<p>Description: {{ activity.description }}</p>
+
+<form method="post">
+    {% csrf_token %}
+    <p>{{ form.student.label }}: {{ form.student }}</p>  <!-- Remove this line if you don't want to display the student field again -->
+    {% for field in form %}
+        {% if field.name != 'student' %}
+            <p>{{ field.label }}: {{ field }}</p>
+        {% endif %}
+    {% endfor %}
+    <button type="submit">Submit Grade</button>
+</form>
+

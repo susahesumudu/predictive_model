@@ -1,0 +1,128 @@
+<!-- templates/includes/sidebar.html -->
+
+{% if user.is_authenticated %}
+    <div class="bg-dark text-white p-3">
+        <!-- Site Name -->
+       
+        <!-- Logged-in User's Name -->
+        <p class="mb-4">Logged in as: {{ user.firstname }}</p>
+   
+
+        <ul class="nav flex-column">
+         
+           
+
+            {% for group in user.groups.all %}
+                {% if group.name == 'Admin' %}
+                    <!-- Features for Admins -->
+   <h2>Manage</h2>
+            <h3>Users</h3>
+            <a href="{% url 'user_list' %}">View Users</a>
+            <a href="{% url 'user_create' %}">Create User</a>
+            
+            <h3>Groups</h3>
+            <a href="{% url 'group_list' %}">View Groups</a>
+            <a href="{% url 'group_create' %}">Create Group</a>
+        </div>
+                    <h2>Manage</h2>
+
+            <!-- Course Section -->
+            <h3>Courses</h3>
+            <ul>
+                <li><a href="{% url 'course_list' %}">View All Courses</a></li>
+                <li><a href="{% url 'course_create' %}">Add New Course</a></li>
+            </ul>
+
+            <!-- Module Section -->
+            <h3>Modules</h3>
+            <ul>
+                <li><a href="{% url 'module_list' %}">View All Modules</a></li>
+                <li><a href="{% url 'module_create' %}">Add New Module</a></li>
+            </ul>
+
+            <!-- Task Section -->
+            <h3>Tasks</h3>
+            <ul>
+                <li><a href="{% url 'task_list' %}">View All Tasks</a></li>
+                <li><a href="{% url 'task_create' %}">Add New Task</a></li>
+            </ul>
+
+            <!-- Activity Section -->
+            <h3>Activities</h3>
+            <ul>
+                <li><a href="{% url 'activity_list' %}">View All Activities</a></li>
+                <li><a href="{% url 'activity_create' %}">Add New Activity</a></li>
+            </ul>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/admin/">Admin </a>
+                    </li>
+                {% elif group.name == 'Staff' %}
+                 
+             <!-- Features for Staff -->
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Manage Students</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Create Assignments</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Grade Submissions</a>
+                    </li>
+
+                  
+            {% elif group.name == 'Teacher' %}
+                    <!-- Teacher-specific links -->
+                     <h2>Manage</h2>
+
+            <!-- Course Section -->
+            <h3>Courses</h3>
+                  <ul>
+                      <li><a href="{% url 'course_list' %}">View All Courses</a></li>
+               
+                  </ul>
+
+            <!-- Module Section -->
+            <h3>Modules</h3>
+                  <ul>
+                      <li><a href="{% url 'module_list' %}">View All Modules</a></li>
+                     
+                  </ul>
+
+            <!-- Task Section -->
+            <h3>Tasks</h3>
+                    <ul>
+                        <li><a href="{% url 'task_list' %}">View All Tasks</a></li>
+                     
+                    </ul>
+
+            <!-- Activity Section -->
+            <h3>Activities</h3>
+                    <ul>
+                        <li><a href="{% url 'activity_list' %}">View All Activities</a></li>
+                        <li><a href="{% url 'activity_create' %}">Add New Activity</a></li>
+                    </ul>
+                    <ul>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">Gradeing Students</a>
+                    </li>
+                    </ul>
+                   
+
+
+                  {% elif group.name == 'Student' %}
+                    <!-- Features for Students -->
+                    <li class="nav-item">
+                        <a href="{% url 'student_dashboard' %}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'activity_list' %}">View All Activities</a>
+                    </li>                  
+                 
+                {% endif %}
+
+
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+

@@ -47,11 +47,12 @@
                 {% else %}
                 <p>No grading rubric available for this activity.</p>
                 {% endif %}
-            {% else %}
-                Not Published
                 {% if is_teacher %}
                 <a href="{% url 'rubric_create' activity.pk %}" class="btn add-btn">Add Rubric</a>
                 {% endif %}
+            {% else %}
+                Not Published
+                
             {% endif %}
 
 
@@ -64,7 +65,33 @@
     <!-- Submission Section -->
     {% if is_student %}
         <h3>Submit Your Work</h3>
-        <a href="{% url 'submit_activity' activity.pk %}" >Submit Your Work</a>
+        <h4>Not Graded Submissions</h4>
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Submission Date</th>
+            <th>Status</th>
+            <th>Marks</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for submission in activity.submissions.all %}
+            {% if not submission.marks and submission.student == request.user %}
+            <tr>
+                <td>{{ submission.student.username }}</td>
+                <td>{{ submission.submitted_at }}</td>
+                <td>{% if submission.is_late %}Late{% else %}On Time{% endif %}</td>
+                <td>Not Graded</td>
+               
+            </tr>
+            {% endif %}
+        {% endfor %}
+    </tbody>
+</table>
+
+        <a href="{% url 'submit_activity' activity.pk %}" class="btn add-btn">Submit Your Work</a>
     {% endif %}
 
     <!-- Submissions and grading section (for teachers) -->
@@ -164,6 +191,12 @@
         <p>No submissions available for this activity.</p>
         {% endif %}
     {% endif %}
+     {% if not is_student %}
+ <a href="{% url 'activity_edit' activity.pk %}" class="btn edit-btn">Edit</a>
+                <a href="{% url 'activity_delete' activity.pk %}" class="btn delete-btn">Delete</a>
+                                {% endif %}
+   
 </div>
+
 {% endblock %}
 

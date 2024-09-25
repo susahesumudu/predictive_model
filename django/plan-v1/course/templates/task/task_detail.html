@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Task Detail{% endblock %}
+
+{% block content %}
+<div class="course-detail-container">
+    <h2>{{ task.title }}</h2>
+    
+    <div class="task-info">
+        <p><strong>Description:</strong> {{ task.description }}</p>
+    </div>
+
+    <div class="task-actions">
+{% if not is_teacher %}  <!-- Hide Edit/Delete for Teachers -->
+ <a href="{% url 'task_edit' task.pk %}" class="btn edit-btn">Edit</a>
+        <a href="{% url 'task_delete' task.pk %}" class="btn delete-btn">Delete</a>
+                {% endif %}
+       
+        <a href="{% url 'task_list' %}" class="btn back-btn">Back to Task List</a>
+    </div>
+</div>
+{% endblock %}
+

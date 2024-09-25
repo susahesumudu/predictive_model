@@ -1,0 +1,12 @@
+<h2>{{ student.name }}</h2>
+<p>Email: {{ student.email }}</p>
+
+<h3>Assessments</h3>
+<ul>
+    {% for assessment in assessments %}
+        <li>Rubric: {{ assessment.rubric.name }}, Total Score: {{ assessment.total_score }}</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'rubric_assessment:student_list' %}">Back to Student List</a>
+
